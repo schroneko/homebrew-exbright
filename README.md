@@ -5,7 +5,7 @@ ExternalBrightness is a lightweight macOS menu bar app for controlling external 
 ## Install
 
 ```sh
-brew install --cask schroneko/tap/external-brightness
+brew install --cask schroneko/exbright/exbright
 ```
 
 Or download `ExternalBrightness-1.0.1.zip` from the releases page.
