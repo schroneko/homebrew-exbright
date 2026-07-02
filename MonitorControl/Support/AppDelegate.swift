@@ -120,7 +120,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
   func updateMenusAndKeys() {
     menu.updateMenus()
+    self.updateStatusItemBrightness()
     self.updateMediaKeyTap()
+  }
+
+  func updateStatusItemBrightness() {
+    guard Thread.isMainThread else {
+      DispatchQueue.main.async {
+        self.updateStatusItemBrightness()
+      }
+      return
+    }
+    let displays = DisplayManager.shared.getEnabledDdcCapableDisplays()
+    if let averageBrightness = DisplayManager.shared.getAverageBrightness(of: displays) {
+      self.statusItem.button?.title = "Brightness \(DisplayManager.brightnessPercentText(averageBrightness))"
+      self.statusItem.button?.image = nil
+      self.statusItem.button?.imagePosition = .noImage
+    } else {
+      self.statusItem.button?.title = ""
+      self.statusItem.button?.image = NSImage(named: "status")
+      self.statusItem.button?.imagePosition = .imageOnly
+    }
   }
 
   func checkPermissions() {
@@ -192,22 +212,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     self.mediaKeyTap.updateMediaKeyTap()
   }
 
-  func settingsReset() {
-    if let bundleID = Bundle.main.bundleIdentifier {
-      prefs.removePersistentDomain(forName: bundleID)
-    }
-    self.setDefaultPrefs()
-    self.configure(firstrun: true)
-  }
-
-  func macOS10() -> Bool {
-    if !DEBUG_MACOS10, #available(macOS 11.0, *) {
-      return false
-    } else {
-      return true
-    }
-  }
-
   func setStartAtLogin(enabled: Bool) {
     let identifier = "\(Bundle.main.bundleIdentifier!)Helper" as CFString
     SMLoginItemSetEnabled(identifier, enabled)
@@ -220,6 +224,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     menu = MenuHandler()
     menu.delegate = menu
     self.statusItem.button?.image = NSImage(named: "status")
+    self.updateStatusItemBrightness()
     self.statusItem.menu = menu
   }
 

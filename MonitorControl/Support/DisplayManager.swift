@@ -252,6 +252,21 @@ class DisplayManager {
     }
   }
 
+  func getEnabledDdcCapableDisplays() -> [OtherDisplay] {
+    self.getDdcCapableDisplays().filter { !$0.readPrefAsBool(key: .isDisabled) }
+  }
+
+  func getAverageBrightness(of displays: [OtherDisplay]) -> Float? {
+    guard !displays.isEmpty else {
+      return nil
+    }
+    return displays.reduce(Float(0)) { $0 + $1.getBrightness() } / Float(displays.count)
+  }
+
+  static func brightnessPercentText(_ value: Float) -> String {
+    "\(Int(round(max(0, min(1, value)) * 100)))%"
+  }
+
   func getAppleDisplays() -> [AppleDisplay] {
     self.displays.compactMap { $0 as? AppleDisplay }
   }

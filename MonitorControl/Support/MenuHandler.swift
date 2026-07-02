@@ -35,6 +35,19 @@ class MenuHandler: NSMenu, NSMenuDelegate {
     displaysItem.isEnabled = false
     self.addItem(displaysItem)
 
+    let enabledDisplays = DisplayManager.shared.getEnabledDdcCapableDisplays()
+    let brightnessItem = NSMenuItem(title: self.brightnessTitle(for: enabledDisplays), action: nil, keyEquivalent: "")
+    brightnessItem.isEnabled = false
+    self.addItem(brightnessItem)
+
+    if enabledDisplays.count > 1 {
+      for display in enabledDisplays {
+        let displayItem = NSMenuItem(title: "\(display.name): \(DisplayManager.brightnessPercentText(display.getBrightness()))", action: nil, keyEquivalent: "")
+        displayItem.isEnabled = false
+        self.addItem(displayItem)
+      }
+    }
+
     let accessTitle = MediaKeyTapManager.readPrivileges(prompt: false) ? "Accessibility: OK" : "Accessibility: Required"
     let accessItem = NSMenuItem(title: accessTitle, action: nil, keyEquivalent: "")
     accessItem.isEnabled = false
@@ -45,5 +58,12 @@ class MenuHandler: NSMenu, NSMenuDelegate {
     let item = NSMenuItem(title: "Launch at Login", action: #selector(app.launchAtLoginClicked(_:)), keyEquivalent: "")
     item.state = prefs.bool(forKey: PrefKey.launchAtLogin.rawValue) ? .on : .off
     self.addItem(item)
+  }
+
+  private func brightnessTitle(for displays: [OtherDisplay]) -> String {
+    guard let averageBrightness = DisplayManager.shared.getAverageBrightness(of: displays) else {
+      return "Brightness: unavailable"
+    }
+    return "Brightness: \(DisplayManager.brightnessPercentText(averageBrightness))"
   }
 }

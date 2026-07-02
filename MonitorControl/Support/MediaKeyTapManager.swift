@@ -78,6 +78,7 @@ class MediaKeyTapManager: MediaKeyTapDelegate {
       for appleDisplay in DisplayManager.shared.getAppleDisplays() where !appleDisplay.isBuiltIn() {
         appleDisplay.stepBrightness(isUp: isUp, isSmallIncrement: isSmallIncrement)
       }
+      app.updateStatusItemBrightness()
       return
     } else if let internalDisplay = DisplayManager.shared.getBuiltInDisplay() as? AppleDisplay {
       internalDisplay.stepBrightness(isUp: isUp, isSmallIncrement: isSmallIncrement)
@@ -148,6 +149,7 @@ class MediaKeyTapManager: MediaKeyTapDelegate {
       default: continue
       }
     }
+    app.updateStatusItemBrightness()
   }
 
   private func oppositeMediaKey(mediaKey: MediaKey) -> MediaKey? {
@@ -367,12 +369,6 @@ class MediaKeyTapManager: MediaKeyTapDelegate {
       return false
     }
     return true
-  }
-
-  static func acquirePrivileges(firstAsk: Bool = false) {
-    if !self.readPrivileges(prompt: false), !firstAsk {
-      os_log("Accessibility privileges are missing; function key hotkeys remain available", type: .info)
-    }
   }
 
   static func readPrivileges(prompt: Bool) -> Bool {
