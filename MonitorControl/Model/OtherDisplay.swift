@@ -142,7 +142,6 @@ class OtherDisplay: Display {
     } else {
       self.savePref(self.prefExists(for: command) ? self.readPrefAsFloat(for: command) : Float(1), for: command)
       self.savePref(self.readPrefAsFloat(for: command), key: .SwBrightness)
-      self.brightnessSyncSourceValue = self.readPrefAsFloat(for: command)
       self.smoothBrightnessTransient = self.readPrefAsFloat(for: command)
       os_log("- Software controlled display current internal value: %{public}@", type: .info, String(self.readPrefAsFloat(for: command)))
     }
@@ -164,10 +163,6 @@ class OtherDisplay: Display {
       }
     }
     self.savePref(Int(currentMuteValue), for: .audioMuteScreenBlank)
-  }
-
-  func setupSliderCurrentValue(command: Command) -> Float {
-    (command == .audioSpeakerVolume && self.readPrefAsBool(key: .enableMuteUnmute) && self.readPrefAsInt(for: .audioMuteScreenBlank) == 1) ? 0 : self.readPrefAsFloat(for: command)
   }
 
   func stepVolume(isUp: Bool, isSmallIncrement: Bool) {
@@ -198,9 +193,6 @@ class OtherDisplay: Display {
     }
     if !isAlreadySet {
       self.savePref(volumeOSDValue, for: .audioSpeakerVolume)
-      if let slider = self.sliderHandler[.audioSpeakerVolume] {
-        slider.setValue(volumeOSDValue, displayID: self.identifier)
-      }
     }
   }
 
@@ -217,13 +209,10 @@ class OtherDisplay: Display {
     OSDUtils.showOsd(displayID: self.identifier, command: .contrast, value: contrastOSDValue, roundChiclet: !isSmallIncrement)
     if !isAlreadySet {
       self.savePref(contrastOSDValue, for: .contrast)
-      if let slider = self.sliderHandler[.contrast] {
-        slider.setValue(contrastOSDValue, displayID: self.identifier)
-      }
     }
   }
 
-  func toggleMute(fromVolumeSlider: Bool = false) {
+  func toggleMute() {
     guard !self.readPrefAsBool(key: .unavailableDDC, for: .audioSpeakerVolume) else {
       OSDUtils.showOsdMuteDisabled(displayID: self.identifier)
       return
@@ -249,13 +238,8 @@ class OtherDisplay: Display {
     if !self.readPrefAsBool(key: .enableMuteUnmute) || volumeOSDValue > 0 {
       self.writeDDCValues(command: .audioSpeakerVolume, value: self.convValueToDDC(for: .audioSpeakerVolume, from: volumeOSDValue))
     }
-    if !fromVolumeSlider {
-      if !self.readPrefAsBool(key: .hideOsd) {
-        OSDUtils.showOsd(displayID: self.identifier, command: volumeOSDValue > 0 ? .audioSpeakerVolume : .audioMuteScreenBlank, value: volumeOSDValue, roundChiclet: true)
-      }
-      if let slider = self.sliderHandler[.audioSpeakerVolume] {
-        slider.setValue(volumeOSDValue)
-      }
+    if !self.readPrefAsBool(key: .hideOsd) {
+      OSDUtils.showOsd(displayID: self.identifier, command: volumeOSDValue > 0 ? .audioSpeakerVolume : .audioMuteScreenBlank, value: volumeOSDValue, roundChiclet: true)
     }
   }
 
@@ -325,10 +309,6 @@ class OtherDisplay: Display {
       os_log("Brightness key target for %{public}@ from %{public}@ to %{public}@ combined %{public}@", type: .info, self.name, String(currentValue), String(osdValue), String(!prefs.bool(forKey: PrefKey.disableCombinedBrightness.rawValue)))
       _ = self.setBrightness(osdValue)
       OSDUtils.showOsd(displayID: self.identifier, command: .brightness, value: osdValue, roundChiclet: !isSmallIncrement)
-    }
-    if let slider = self.sliderHandler[.brightness] {
-      slider.setValue(osdValue, displayID: self.identifier)
-      self.brightnessSyncSourceValue = osdValue
     }
   }
 

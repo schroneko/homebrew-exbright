@@ -196,7 +196,6 @@ class DisplayManager {
       }
       if (!otherDisplay.isSw() && !otherDisplay.readPrefAsBool(key: .unavailableDDC, for: .brightness)) || otherDisplay.isSw() {
         otherDisplay.setupCurrentAndMaxValues(command: .brightness, firstrun: firstrun)
-        otherDisplay.brightnessSyncSourceValue = otherDisplay.readPrefAsFloat(for: .brightness)
       }
     }
   }
@@ -241,38 +240,8 @@ class DisplayManager {
     self.displays.compactMap { $0 as? OtherDisplay }
   }
 
-  func sortDisplays() {
-    // Opsiyonel: sıralamadan önce log al
-    let before = displays.map { $0.name }
-    os_log("Displays before sorting: %{public}@", before)
-    
-    // In‑place sıralama
-    displays.sort { lhs, rhs in
-      lhs.name.localizedStandardCompare(rhs.name) == .orderedAscending
-    }
-    
-    // Opsiyonel: sıralamadan sonra log al
-    let after = displays.map { $0.name }
-    os_log("Displays after sorting: %{public}@", after)
-  }
-  
-  func sortDisplaysByFriendlyName() -> [Display] {
-      return displays.sorted { lhs, rhs in
-          let lhsTitle = lhs.readPrefAsString(key: .friendlyName).isEmpty
-              ? lhs.name
-              : lhs.readPrefAsString(key: .friendlyName)
-          let rhsTitle = rhs.readPrefAsString(key: .friendlyName).isEmpty
-              ? rhs.name
-              : rhs.readPrefAsString(key: .friendlyName)
-          return lhsTitle.localizedStandardCompare(rhsTitle) == .orderedDescending
-      }
-  }
-
-
-
-  /// displays dizisini sıralar ve döner
   func getAllDisplays() -> [Display] {
-    return displays
+    self.displays
   }
 
   func getDdcCapableDisplays() -> [OtherDisplay] {
@@ -387,10 +356,6 @@ class DisplayManager {
         otherDisplay.savePref(otherDisplay.getSwBrightness(), key: .SwBrightness)
         os_log("Restoring sw brightness to %{public}@ on other display %{public}@", type: .info, String(savedPrefValue), String(otherDisplay.identifier))
         _ = otherDisplay.setSwBrightness(savedPrefValue, smooth: async)
-        if otherDisplay.isSw(), let slider = otherDisplay.sliderHandler[.brightness] {
-          os_log("Restoring sw slider to %{public}@ for other display %{public}@", type: .info, String(savedPrefValue), String(otherDisplay.identifier))
-          slider.setValue(savedPrefValue, displayID: otherDisplay.identifier)
-        }
       } else {
         _ = otherDisplay.setSwBrightness(1)
       }
