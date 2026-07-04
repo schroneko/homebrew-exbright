@@ -133,14 +133,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     let displays = DisplayManager.shared.getEnabledDdcCapableDisplays()
     if let averageBrightness = DisplayManager.shared.getAverageBrightness(of: displays) {
-      self.statusItem.button?.title = "Brightness \(DisplayManager.brightnessPercentText(averageBrightness))"
-      self.statusItem.button?.image = nil
-      self.statusItem.button?.imagePosition = .noImage
+      self.statusItem.button?.title = ""
+      self.statusItem.button?.image = Self.brightnessSunImage(value: averageBrightness)
+      self.statusItem.button?.imagePosition = .imageOnly
     } else {
       self.statusItem.button?.title = ""
       self.statusItem.button?.image = NSImage(named: "status")
       self.statusItem.button?.imagePosition = .imageOnly
     }
+  }
+
+  private static func brightnessSunImage(value: Float) -> NSImage {
+    let litRays = Int((max(0, min(1, CGFloat(value))) * 8).rounded())
+    let image = NSImage(size: NSSize(width: 18, height: 18), flipped: false) { rect in
+      let center = NSPoint(x: rect.midX, y: rect.midY)
+      let coreRadius: CGFloat = 3.5
+      NSColor.black.setFill()
+      NSBezierPath(ovalIn: NSRect(x: center.x - coreRadius, y: center.y - coreRadius, width: coreRadius * 2, height: coreRadius * 2)).fill()
+      let rayRadius: CGFloat = 1.25
+      let orbit: CGFloat = 7
+      for ray in 0 ..< 8 {
+        let angle = CGFloat.pi / 2 - CGFloat(ray) * CGFloat.pi / 4
+        let rayCenter = NSPoint(x: center.x + cos(angle) * orbit, y: center.y + sin(angle) * orbit)
+        NSColor.black.withAlphaComponent(ray < litRays ? 1 : 0.25).setFill()
+        NSBezierPath(ovalIn: NSRect(x: rayCenter.x - rayRadius, y: rayCenter.y - rayRadius, width: rayRadius * 2, height: rayRadius * 2)).fill()
+      }
+      return true
+    }
+    image.isTemplate = true
+    return image
   }
 
   func checkPermissions() {
