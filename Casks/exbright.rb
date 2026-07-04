@@ -1,6 +1,6 @@
 cask "exbright" do
-  version "1.0.1"
-  sha256 "d197147cb78a1ba37b7b2fd39f4ef93226d51cd319519f3fcf7e3054e533618f"
+  version "1.1.0"
+  sha256 "67c2b20041cfba2c1c60b14910809fc7a450fd6e4f6fadb160f2d622ba038ca9"
 
   url "https://github.com/schroneko/homebrew-exbright/releases/download/v#{version}/ExternalBrightness-#{version}.zip"
   name "ExternalBrightness"
