@@ -1,17 +1,17 @@
 cask "exbright" do
-  version "1.1.0"
-  sha256 "67c2b20041cfba2c1c60b14910809fc7a450fd6e4f6fadb160f2d622ba038ca9"
+  version "1.2.0"
+  sha256 "54aa740e873a7de8f084e7b33505627fb14c5fec85257f7998c4305ffb63143c"
 
-  url "https://github.com/schroneko/homebrew-exbright/releases/download/v#{version}/ExternalBrightness-#{version}.zip"
-  name "ExternalBrightness"
+  url "https://github.com/schroneko/homebrew-exbright/releases/download/v#{version}/Exbright-#{version}.zip"
+  name "Exbright"
   desc "Menu bar app for controlling external display brightness"
   homepage "https://github.com/schroneko/homebrew-exbright"
 
-  app "ExternalBrightness.app"
+  app "Exbright.app"
 
   postflight do
     system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "/Applications/ExternalBrightness.app"],
+                   args: ["-dr", "com.apple.quarantine", "/Applications/Exbright.app"],
                    sudo: false
   end
 

@@ -8,7 +8,7 @@ Exbright is a lightweight macOS menu bar app for controlling external display br
 brew install --cask schroneko/exbright/exbright
 ```
 
-Or download `ExternalBrightness-1.1.0.zip` from the releases page.
+Or download `Exbright-1.2.0.zip` from the releases page.
 
 ## Features
 
