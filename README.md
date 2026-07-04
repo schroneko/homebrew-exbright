@@ -1,6 +1,6 @@
-# ExternalBrightness
+# Exbright
 
-ExternalBrightness is a lightweight macOS menu bar app for controlling external display brightness with the standard brightness keys.
+Exbright is a lightweight macOS menu bar app for controlling external display brightness with the standard brightness keys.
 
 ## Install
 
@@ -22,7 +22,7 @@ Or download `ExternalBrightness-1.1.0.zip` from the releases page.
 
 ## Notes
 
-ExternalBrightness currently focuses on external display brightness control. It does not include MonitorControl's settings UI, sliders, custom shortcuts, contrast controls, or update framework.
+Exbright currently focuses on external display brightness control. It does not include MonitorControl's settings UI, sliders, custom shortcuts, contrast controls, or update framework.
 
 The app may require Accessibility permission for media key handling on some macOS configurations.
 
@@ -37,6 +37,6 @@ xcodebuild -project MonitorControl.xcodeproj \
 
 ## License
 
-ExternalBrightness is distributed under the MIT License.
+Exbright is distributed under the MIT License.
 
 This app is derived from MonitorControl, which is also distributed under the MIT License. The original license notice is preserved in `License.txt`.

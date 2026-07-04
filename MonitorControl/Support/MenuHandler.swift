@@ -22,7 +22,7 @@ class MenuHandler: NSMenu, NSMenuDelegate {
     self.addItem(NSMenuItem.separator())
     self.addLaunchAtLoginItem()
     self.addItem(withTitle: "Accessibility Permission...", action: #selector(app.accessibilityPermissionClicked(_:)), keyEquivalent: "")
-    self.addItem(withTitle: "About ExternalBrightness", action: #selector(app.aboutClicked(_:)), keyEquivalent: "")
+    self.addItem(withTitle: "About Exbright", action: #selector(app.aboutClicked(_:)), keyEquivalent: "")
     self.addItem(NSMenuItem.separator())
     self.addItem(withTitle: "Quit", action: #selector(app.quitClicked), keyEquivalent: "q")
     app.updateStatusItemVisibility(true)

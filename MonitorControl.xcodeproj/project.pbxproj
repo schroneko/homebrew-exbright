@@ -799,7 +799,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.externalbrightness.ExternalBrightness;
-				PRODUCT_NAME = ExternalBrightness;
+				PRODUCT_NAME = Exbright;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MonitorControl/Support/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -836,7 +836,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.externalbrightness.ExternalBrightness;
-				PRODUCT_NAME = ExternalBrightness;
+				PRODUCT_NAME = Exbright;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MonitorControl/Support/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -873,7 +873,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.externalbrightness.ExternalBrightnessHelper;
-				PRODUCT_NAME = ExternalBrightnessHelper;
+				PRODUCT_NAME = ExbrightHelper;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.5;
 			};
@@ -904,7 +904,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.externalbrightness.ExternalBrightnessHelper;
-				PRODUCT_NAME = ExternalBrightnessHelper;
+				PRODUCT_NAME = ExbrightHelper;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.5;
 			};
