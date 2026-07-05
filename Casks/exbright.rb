@@ -1,6 +1,6 @@
 cask "exbright" do
-  version "1.2.0"
-  sha256 "54aa740e873a7de8f084e7b33505627fb14c5fec85257f7998c4305ffb63143c"
+  version "1.2.1"
+  sha256 "ef31f7e0feb4423d34838cc857403a2071e2e0bd6afd42d3b1235f228f94a379"
 
   url "https://github.com/schroneko/homebrew-exbright/releases/download/v#{version}/Exbright-#{version}.zip"
   name "Exbright"
