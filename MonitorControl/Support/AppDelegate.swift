@@ -131,7 +131,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       }
       return
     }
-    let displays = DisplayManager.shared.getEnabledDdcCapableDisplays()
+    let displays = DisplayManager.shared.getEnabledControllableDisplays()
     if let averageBrightness = DisplayManager.shared.getAverageBrightness(of: displays) {
       self.statusItem.button?.title = ""
       self.statusItem.button?.image = Self.brightnessSunImage(value: averageBrightness)

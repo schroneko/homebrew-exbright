@@ -29,13 +29,13 @@ class MenuHandler: NSMenu, NSMenuDelegate {
   }
 
   private func addStatusItems() {
-    let displays = DisplayManager.shared.getDdcCapableDisplays()
+    let displays = DisplayManager.shared.getControllableDisplays()
     let displayTitle = displays.count == 1 ? "External displays: 1" : "External displays: \(displays.count)"
     let displaysItem = NSMenuItem(title: displayTitle, action: nil, keyEquivalent: "")
     displaysItem.isEnabled = false
     self.addItem(displaysItem)
 
-    let enabledDisplays = DisplayManager.shared.getEnabledDdcCapableDisplays()
+    let enabledDisplays = DisplayManager.shared.getEnabledControllableDisplays()
     let brightnessItem = NSMenuItem(title: self.brightnessTitle(for: enabledDisplays), action: nil, keyEquivalent: "")
     brightnessItem.isEnabled = false
     self.addItem(brightnessItem)

@@ -256,6 +256,14 @@ class DisplayManager {
     self.getDdcCapableDisplays().filter { !$0.readPrefAsBool(key: .isDisabled) }
   }
 
+  func getControllableDisplays() -> [OtherDisplay] {
+    self.getOtherDisplays().filter { !$0.isVirtual && !$0.isDummy }
+  }
+
+  func getEnabledControllableDisplays() -> [OtherDisplay] {
+    self.getControllableDisplays().filter { !$0.readPrefAsBool(key: .isDisabled) }
+  }
+
   func getAverageBrightness(of displays: [OtherDisplay]) -> Float? {
     guard !displays.isEmpty else {
       return nil
