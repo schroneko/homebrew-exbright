@@ -69,6 +69,7 @@ class DisplayManager {
       shade.isMovableByWindowBackground = false
       shade.backgroundColor = .clear
       shade.ignoresMouseEvents = true
+      shade.sharingType = .none
       shade.level = NSWindow.Level(rawValue: Int(CGShieldingWindowLevel()))
       shade.orderFrontRegardless()
       shade.collectionBehavior = [.stationary, .canJoinAllSpaces, .ignoresCycle]
