@@ -2,7 +2,7 @@
 "About" = "À Propos";
 
 /* Shown in the alert dialog */
-"An other app seems to change the brightness or colors which causes issues.\n\nTo solve this, you need to quit the other app or disable gamma control for your displays in MonitorControl!" = "Une autre application semble modifier la luminosité ou les couleurs, ce qui provoque des problèmes.\n\nPour résoudre ce problème, vous devez quitter l'autre application ou désactiver le contrôle gamma pour vos écrans dans MonitorControl !";
+"An other app seems to change the brightness or colors which causes issues.\n\nTo solve this, you need to quit the other app or disable gamma control for your displays in Exbright!" = "Une autre application semble modifier la luminosité ou les couleurs, ce qui provoque des problèmes.\n\nPour résoudre ce problème, vous devez quitter l'autre application ou désactiver le contrôle gamma pour vos écrans dans Exbright !";
 
 /* Shown in the main prefs window */
 "App menu" = "Menu de l'app";

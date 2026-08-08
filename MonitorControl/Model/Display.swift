@@ -14,6 +14,7 @@ class Display: Equatable {
   var smoothBrightnessTransient: Float = 1
   var smoothBrightnessRunning: Bool = false
   var smoothBrightnessSlow: Bool = false
+  private var gammaInterferenceCounter = 0
   let swBrightnessSemaphore = DispatchSemaphore(value: 1)
 
   static func == (lhs: Display, rhs: Display) -> Bool {
@@ -282,18 +283,22 @@ class Display: Equatable {
   }
 
   func checkGammaInterference() {
-    let currentSwBrightness = self.getSwBrightness()
-    guard !self.isDummy, !DisplayManager.shared.gammaInterferenceWarningShown, !(prefs.bool(forKey: PrefKey.disableCombinedBrightness.rawValue)), !self.readPrefAsBool(key: .avoidGamma), !self.isVirtual, !self.smoothBrightnessRunning, self.prefExists(key: .SwBrightness), abs(currentSwBrightness - self.readPrefAsFloat(key: .SwBrightness)) > 0.02 else {
+    guard !self.isDummy, !DisplayManager.shared.gammaInterferenceWarningShown, !(prefs.bool(forKey: PrefKey.disableCombinedBrightness.rawValue)), !self.readPrefAsBool(key: .avoidGamma), !self.isVirtual, !self.smoothBrightnessRunning, self.prefExists(key: .SwBrightness) else {
       return
     }
-    DisplayManager.shared.gammaInterferenceCounter += 1
+    let currentSwBrightness = self.getSwBrightness()
+    guard abs(currentSwBrightness - self.readPrefAsFloat(key: .SwBrightness)) > 0.02 else {
+      self.gammaInterferenceCounter = 0
+      return
+    }
+    self.gammaInterferenceCounter += 1
     _ = self.setSwBrightness(1)
-    os_log("Gamma table interference detected, number of events: %{public}@", type: .info, String(DisplayManager.shared.gammaInterferenceCounter))
-    if DisplayManager.shared.gammaInterferenceCounter >= 3 {
+    os_log("Gamma table interference detected for %{public}@, consecutive events: %{public}@", type: .info, self.name, String(self.gammaInterferenceCounter))
+    if self.gammaInterferenceCounter >= 3 {
       DisplayManager.shared.gammaInterferenceWarningShown = true
       let alert = NSAlert()
       alert.messageText = NSLocalizedString("Is f.lux or similar running?", comment: "Shown in the alert dialog")
-      alert.informativeText = NSLocalizedString("An other app seems to change the brightness or colors which causes issues.\n\nTo solve this, you need to quit the other app or disable gamma control for your displays in MonitorControl!", comment: "Shown in the alert dialog")
+      alert.informativeText = NSLocalizedString("An other app seems to change the brightness or colors which causes issues.\n\nTo solve this, you need to quit the other app or disable gamma control for your displays in Exbright!", comment: "Shown in the alert dialog")
       alert.addButton(withTitle: NSLocalizedString("I'll quit the other app", comment: "Shown in the alert dialog"))
       alert.addButton(withTitle: NSLocalizedString("Disable gamma control for my displays", comment: "Shown in the alert dialog"))
       alert.alertStyle = NSAlert.Style.critical
@@ -304,7 +309,6 @@ class Display: Equatable {
           otherDisplay.savePref(true, key: .avoidGamma)
           _ = otherDisplay.setSwBrightness(1)
           DisplayManager.shared.gammaInterferenceWarningShown = false
-          DisplayManager.shared.gammaInterferenceCounter = 0
         }
       } else {
         os_log("We won't watch for gamma table interference anymore", type: .info)
