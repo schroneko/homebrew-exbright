@@ -18,6 +18,7 @@ Or download `Exbright-1.2.2.zip` from the releases page.
 - Uses MonitorControl-style combined brightness behavior for displays that need it
 - Shows the native macOS brightness OSD
 - Restores the saved brightness after launch and wake
+- Starts automatically at login unless disabled from the menu
 - Provides a minimal menu bar UI
 
 ## Notes

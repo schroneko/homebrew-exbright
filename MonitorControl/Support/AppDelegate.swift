@@ -90,6 +90,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       prefs.set(PollingMode.normal.rawValue, forKey: PrefKey.pollingMode.rawValue)
       prefs.set(MenuIcon.show.rawValue, forKey: PrefKey.menuIcon.rawValue)
     }
+    if prefs.object(forKey: PrefKey.launchAtLogin.rawValue) == nil {
+      self.setStartAtLogin(enabled: true)
+    }
   }
 
   @objc func displayReconfigured() {
@@ -233,10 +236,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     self.mediaKeyTap.updateMediaKeyTap()
   }
 
-  func setStartAtLogin(enabled: Bool) {
-    let identifier = "\(Bundle.main.bundleIdentifier!)Helper" as CFString
-    SMLoginItemSetEnabled(identifier, enabled)
-    prefs.set(enabled, forKey: PrefKey.launchAtLogin.rawValue)
+  @discardableResult
+  func setStartAtLogin(enabled: Bool) -> Bool {
+    guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+      return false
+    }
+    let identifier = "\(bundleIdentifier)Helper" as CFString
+    let succeeded = SMLoginItemSetEnabled(identifier, enabled)
+    if succeeded {
+      prefs.set(enabled, forKey: PrefKey.launchAtLogin.rawValue)
+    } else {
+      os_log("Failed to update launch at login", type: .error)
+    }
+    return succeeded
   }
 
   func playVolumeChangedSound() {}
