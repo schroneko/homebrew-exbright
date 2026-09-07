@@ -9,10 +9,10 @@ cask "exbright" do
 
   app "Exbright.app"
 
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "/Applications/Exbright.app"],
-                   sudo: false
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args: ["-dr", "com.apple.quarantine", "/Applications/Exbright.app"],
+        sudo: false
   end
 
   uninstall quit: "app.externalbrightness.ExternalBrightness"
